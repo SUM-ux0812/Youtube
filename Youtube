@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>YouTube.com Clone</title>
+     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+     <!--comment-->
+
+    <style>
+      p {
+        font-family: Roboto , Arial ;
+        margin-top:0;
+        margin-bottom: 0;
+      }
+      .thumbnail {
+        width: 100%;
+      }
+     
+      
+      .video-title {
+        margin-top: 0 ;
+        font-size: 14px ;
+        font-weight: 500;
+        line-height: 20px;
+        margin-bottom: 10px;
+      }
+
+      .video-info-grid {
+        display: grid;
+        grid-template-columns: 50px 1fr;
+      }
+      .profile-picture {
+        width: 36px;
+        height: 40px;
+        border-radius: 30px;
+
+      }
+
+      .thumbnail-row {
+        margin-bottom: 8px;
+        position: relative;
+      }
+
+      .video-author,
+      .video-stats {
+        font-size: 12px;
+        color: rgb(96 , 96 , 96)
+
+      }
+      
+      .video-author {
+        margin-bottom: 4px;
+      }
+
+      .video-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        column-gap: 16px;
+        row-gap: 40px;
+      }
+
+      @media(max-width: 750px) {
+        .video-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+       @media(max-width: 751px) and (max-width:999) {
+        .video-grid {
+          grid-template-columns: 1fr 1fr 1fr;
+        }
+      }
+      @media (min-width : 1000px) {
+        .video-grid {
+          grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+      }
+      body {
+        margin: 0;
+        padding-top: 80px;
+        padding-left: 96px;
+        padding-right: 24px;
+        background-color: rgb(248 , 248 , 248);
+      }
+      .header {
+        height: 55px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        position: fixed;
+        top:0;
+        left: 0;
+        right:0;
+        z-index: 100;
+        background-color: white;
+        border-bottom-width:1px ;
+        border-bottom-style: solid;
+        border-bottom-color:rgb(230 , 230 , 230) ;
+      }
+
+      .left-section {
+        display: flex;
+        align-items: center;
+      } 
+      .middle-section {
+        flex: 1;
+        margin-left: 70px;
+        margin-right: 35px;
+        max-width: 500px; 
+        display: flex;
+        align-items: center;
+      }
+      .search-bar {
+        flex: 1;
+        height: 36px;
+        padding-left: 1opx;
+        font-size: 16px;
+        border: 1px solid  rbg(192 , 192 , 192);
+        border-radius: 2px;
+        box-shadow: inset 1px 2px 3px rgb(0, 0, 0 , 0.05);
+        width: 0;
+      }
+      .search-bar::placeholder {
+        font-family: Roboto , Arial;
+        font-size: 16px;
+
+      }
+ 
+       .search-button {
+        height: 40px;
+        width: 66px;
+        background-color: rgb(240 , 240 , 240) ;
+        border-width: 1px;
+        border-style: solid;
+        border-color: rbg(192 , 192 , 192);
+        margin-left: -1px;
+        margin-right: 10px;
+       
+      }
+      .search-button , 
+      .voice-search-button ,
+      .uplod-icon-container ,
+      .youtube-app-container ,
+      .not-container
+      {
+         position: relative;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+      }
+      .search-button .tooltip , 
+      .voice-search-button .tooltip , 
+      .uplod-icon-container .tooltip ,
+      .youtube-app-container .tooltip ,
+      .not-container .tooltip
+      {
+        font-family: Roboto , Arial;
+        position: absolute;
+        background-color: gray;
+        color: white;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        padding-left: 8px;
+        padding-right: 8px;
+        border-radius: 2px;
+        font-size: 12px;
+        bottom: -30px;
+        opacity: 0;
+        transition: opacity 0.15;
+        pointer-events: none;
+        white-space: nowrap;
+      }
+      .search-button:hover .tooltip ,
+       .voice-search-button:hover .tooltip ,
+       .uplod-icon-container:hover .tooltip ,
+       .youtube-app-container:hover .tooltip ,
+       .not-container:hover .tooltip
+       {
+        opacity: 1;
+      }
+      .search-icon {
+        height: 25px;
+      }
+
+      .voice-search-button {
+        height: 39px;
+        width: 39px;
+        border-radius: 20px;
+        border: none;
+         background-color: rgb(248 , 248 , 248);
+      }
+
+      .voice-search-icon {
+        height: 24px;
+      }
+
+      .right-section {
+        width: 180px;
+        margin-right: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-shrink: 0;
+      }
+
+      .hamburger-menu {
+        height: 24px;
+        margin-left: 20px;
+        margin-right: 24px;
+      }
+      .youtube-logo {
+        height: 20px;
+      }
+
+      .uplod-icon {
+        height: 24px;
+
+      }
+      .apps-icon {
+        height: 24px;
+      }
+      .not-icon {
+        height: 24px;
+
+      }
+      .notifications-icon-container {
+        position: relative;
+      }
+      .notifications-count {
+        position: absolute;
+        top: -2px;
+        right: -5px;
+        background-color: rgb(200 , 0 , 0);
+        color: white;
+        font-family: Roboto , Arial;
+        font-size: 11px;
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-bottom: 2px;
+        padding-top: 2px;
+        border-radius: 10px;
+      }
+      .current-user-pic {
+        height: 32px;
+        border-radius: 16px;
+      }
+      .sidebar {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        top: 55px;
+        background-color: white;
+        width: 72px;
+        z-index: 200;
+        padding-top: 5px;
+      }
+      .sidebar-link  {
+        display: flex;
+        height: 74px;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        cursor: pointer;
+        
+      }
+      .sidebar-link:hover {
+        background-color: rgb(235 , 235 , 235);
+      }
+       .sidebar-link img {
+        height: 24px;
+        margin-bottom: 4px;
+      }
+      .sidebar-link div {
+        font-family: Roboto , Arial;
+        font-size: 10px;
+
+      }
+
+      .video-time{
+        font-family: Roboto, Arial;
+        font-size: 12px;
+        font-weight: 500;
+        padding: 4px ;
+        background-color: black;
+        color: white;
+        position: absolute;
+        bottom: 10px;
+        right: 8px;
+        border-radius: 2px;
+      }
+     
+    </style>
+  </head>
+  <body>
+    <div class="header">
+        <header class="left-section" >
+          <img class="hamburger-menu" src="icons/hamburger-menu.svg">
+          <img  class="youtube-logo" src="icons/youtube-logo.svg">
+        </header>
+        <div class="middle-section">
+           <input class="search-bar" type="text" placeholder="search">
+           <button class="search-button">
+            <img class="search-icon" src="icons/search.svg">
+               <div class="tooltip">Search </div>
+           </button>
+           <button class="voice-search-button">
+             <img class="voice-search-icon" src="icons/voice-search-icon.svg">
+             <div class="tooltip"> Voice Search </div>
+           </button>
+        </div>
+        <div class="right-section">
+          <div class="uplod-icon-container">
+             <img class="uplod-icon" src="icons/upload.svg">
+             <div class="tooltip"> Create </div>
+          </div>
+          <div class="youtube-app-container">
+            <img  class="apps-icon" src="icons/youtube-apps.svg">
+            <div class="tooltip">YouTube Apps</div>
+          </div>
+          <div class="not-container">
+             <div class="notifications-icon-container">
+            <img class="not-icon" src="icons/notifications.svg">
+            <div class="tooltip">Notifications</div>
+            <div class="notifications-count">3</div>
+          </div>
+          </div>
+          <img class="current-user-pic" src="profile.jpg">
+        </div>
+    </div>
+
+    <nav class="sidebar">
+      <div class="sidebar-link">
+        <img src="icons/home.svg">
+          <div>Home</div>
+      </div>
+      <div class="sidebar-link">
+        <img src="icons/explore.svg">
+        <div>Explore</div>
+      </div>
+      <div class="sidebar-link">
+        <img src="icons/subscriptions.svg">
+        <div>Subecriptions</div>
+      </div>
+      <div class="sidebar-link">
+        <img src="icons/originals.svg">
+        <div>originals</div>
+      </div>
+      <div class="sidebar-link">
+        <img src="icons/youtube-music.svg">
+        <div>YouTube Music</div>
+      </div>
+      <div class="sidebar-link">
+        <img src="icons/library.svg">
+        <div>Library</div>
+      </div>
+    </nav>
+
+      <main>
+        <section class="video-grid" >
+        <div class="video-preview" >
+           <div class="thumbnail-row">
+             <img class="thumbnail" src="july.jpg">
+             <div class="video-time">24:12</div>
+        </div>
+        <div class="video-info-grid">
+          <div class="channel-picture ">
+            <img  class="profile-picture"  src="bunny.jpg">
+          </div>
+          <div class="video-info">
+            <p class="video-title">
+              The Code of July!
+            </p>
+            <p class="video-author">
+              Html Practice
+            </p>
+            <p class="video-stats">
+            3.4M views &#183; 6 months ago
+            </p>
+          </div>
+          </div>
+        </div>
+       
+      <div class="video-preview">
+        <div class="thumbnail-row">
+        <img class="thumbnail" src="grass.jpg">
+            <div class="video-time">34:40</div>
+      </div>
+      <div class="video-info-grid">
+        <div class="channel-picture ">
+          <img  class="profile-picture"  src="greenboy.jpg">
+        </div>
+        <div class="video-info">
+          <p class="video-title">
+            FREEDOM
+          </p>
+          <p class="video-author">
+            8th of December
+          </p>
+          <p class="video-stats">
+          19M views  &#183; 4 years ago
+          </p>
+        </div>
+        </div>
+      </div>
+
+      
+
+      <div class="video-preview" >
+      <div class="thumbnail-row">
+        <img class="thumbnail" src="camrawithecat.jpg">
+            <div class="video-time">20:00</div>
+      </div>
+      <div class="video-info-grid">
+        <div class="channel-picture ">
+          <img  class="profile-picture"  src="cat.jpg">
+        </div>
+        <div class="video-info">
+          <p class="video-title">
+            BREATH 
+          </p>
+          <p class="video-author">
+            CS css Practice
+          </p>
+          <p class="video-stats">
+          5M views &#183; 4 months ago
+          </p>
+        </div>
+        </div>
+      </div>
+
+      <div class="video-preview">
+        <div class="thumbnail-row">
+        <img class="thumbnail" src="deen.jpg">
+             <div class="video-time">12:56</div>            
+      </div>
+      <div class="video-info-grid">
+        <div class="channel-picture ">
+          <img  class="profile-picture"  src="asian.jpg">
+        </div>
+        <div class="video-info">
+          <p class="video-title">
+            ROOTS
+          </p>
+          <p class="video-author">
+            Just a Syrian
+          </p>
+          <p class="video-stats">
+            234k views  &#183; 3 years ago
+          </p>
+        </div>
+        </div>
+      </div>
+
+             <div class="video-preview" >
+      <div class="thumbnail-row">
+        <img class="thumbnail" src="geto.jpg">
+            <div class="video-time">57:07</div>
+      </div>
+      <div class="video-info-grid">
+        <div class="channel-picture ">
+          <img  class="profile-picture"  src="gto-gojo.jpg">
+        </div>
+        <div class="video-info">
+          <p class="video-title">
+            MEMORY
+          </p>
+          <p class="video-author">
+            CS css Practice
+          </p>
+          <p class="video-stats">
+          30k views &#183; 9 months ago
+          </p>
+        </div>
+        </div>
+      </div>
+
+
+         <div class="video-preview" >
+      <div class="thumbnail-row">
+        <img class="thumbnail" src="ghibli.jpg">
+            <div class="video-time">31:00</div>
+      </div>
+      <div class="video-info-grid">
+        <div class="channel-picture ">
+          <img  class="profile-picture"  src="ghiblipro.jpg">
+        </div>
+        <div class="video-info">
+          <p class="video-title">
+            GHİBLİ
+          </p>
+          <p class="video-author">
+            CS css Practice
+          </p>
+          <p class="video-stats">
+          5M views &#183; 4 months ago
+          </p>
+        </div>
+        </div>
+      </div>
+
+  
+
+            <div class="video-preview" >
+      <div class="thumbnail-row">
+        <img class="thumbnail" src="lily.jpg">
+            <div class="video-time">17:08</div>
+      </div>
+      <div class="video-info-grid">
+        <div class="channel-picture ">
+          <img  class="profile-picture"  src="icematcha.jpg">
+        </div>
+        <div class="video-info">
+          <p class="video-title">
+            Night 
+          </p>
+          <p class="video-author">
+            Html practice
+          </p>
+          <p class="video-stats">
+            186k views &#183; 11 months ago
+          </p>
+        </div>
+        </div>
+      </div>
+
+            <div class="video-preview" >
+      <div class="thumbnail-row">
+        <img class="thumbnail" src="bookandrose.jpg">
+             <div class="video-time">10:23</div>
+      </div>
+      <div class="video-info-grid">
+        <div class="channel-picture ">
+          <img  class="profile-picture"  src="matchapro.jpg">
+        </div>
+        <div class="video-info">
+          <p class="video-title">
+            كتاب و وردة
+          </p>
+          <p class="video-author">
+            سمية
+          </p>
+          <p class="video-stats">
+          10M views &#183;  month ago
+          </p>
+        </div>
+        </div>
+      </div>
+
+               <div class="video-preview" >
+      <div class="thumbnail-row">
+        <img class="thumbnail" src="me.jpg">
+            <div class="video-time">5:00</div>
+      </div>
+      <div class="video-info-grid">
+        <div class="channel-picture ">
+          <img  class="profile-picture"  src="yellowlily.jpg">
+        </div>
+        <div class="video-info">
+          <p class="video-title">
+            ME
+          </p>
+          <p class="video-author">
+            CS css Practice
+          </p>
+          <p class="video-stats">
+          2M views &#183; 8 months ago
+          </p>
+        </div>
+        </div>
+      </div>
+
+         <div class="video-preview" >
+      <div class="thumbnail-row">
+        <img class="thumbnail" src="end.jpg">
+            <div class="video-time">33:00</div>
+      </div>
+      <div class="video-info-grid">
+        <div class="channel-picture ">
+          <img  class="profile-picture"  src="blackcat.jpg">
+        </div>
+        <div class="video-info">
+          <p class="video-title">
+            THE END
+          </p>
+          <p class="video-author">
+            CS css Practice
+          </p>
+          <p class="video-stats">
+          200k views &#183; 6 months ago
+          </p>
+        </div>
+        </div>
+      </div>
+
+
+         <div class="video-preview" >
+      <div class="thumbnail-row">
+        <img class="thumbnail" src="book.jpg">
+            <div class="video-time">7:10</div>
+      </div>
+      <div class="video-info-grid">
+        <div class="channel-picture ">
+          <img  class="profile-picture"  src="eye.jpg">
+        </div>
+        <div class="video-info">
+          <p class="video-title">
+              Diary
+          </p>
+          <p class="video-author">
+            CS css Practice
+          </p>
+          <p class="video-stats">
+            20k views &#183; 2 months ago
+          </p>
+        </div>
+        </div>
+      </div>
+
+
+
+      <div class="video-preview">
+        <div class="thumbnail-row">
+        <img class="thumbnail" src="allah.jpg">
+            <div class="video-time">21:02</div>
+      </div>
+      <div class="video-info-grid">
+        <div class="channel-picture ">
+          <img  class="profile-picture"  src="camra.jpg">
+        </div>
+        <div class="video-info">
+          <p class="video-title">
+            Faith
+          </p>
+          <p class="video-author">
+            Sumeyye
+          </p>
+          <p class="video-stats">
+            506k views  &#183; 19 years ago
+          </p>
+        </div>
+         </div>
+        </div>
+      </main>
+    </section>
+  </body>
+</html>
